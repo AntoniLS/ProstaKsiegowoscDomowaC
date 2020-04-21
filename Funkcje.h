@@ -13,7 +13,7 @@ struct Category{
     char* category;
     char* product;
 };
-struct Payment{
+typedef struct Payment{
     char* accountNumber;
     struct Payment *pNext;
     struct Payment *pPrev;
@@ -22,7 +22,7 @@ struct Payment{
 }PayNode;
 
 void printingMenu();
-
 int check(const char *);
+void loadingFromFile(const char*);
 
 #endif //PROSTAKSIEGOWOSCDOMOWAC_FUNKCJE_H

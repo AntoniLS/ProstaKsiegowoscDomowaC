@@ -52,3 +52,27 @@ int check(const char* decission){
     }
     else return 0;
 }
+
+void loadingFromFile(const char* nameOfEntryFile){
+    printf("|%s|\n",nameOfEntryFile);
+    FILE* entryFile = fopen(nameOfEntryFile, "r");
+    if(entryFile) {
+        while (!feof(entryFile)) {
+            char temporaryLine[100]; // jak zmienic na char*
+            fgets(temporaryLine, 100, entryFile);
+            printf("%s\n", temporaryLine);
+
+        }
+    }else{
+        perror("error");
+    }
+
+
+}
+
+void addingPaymentToNode(PayNode** pHead){
+
+    //TODO
+
+}
+
