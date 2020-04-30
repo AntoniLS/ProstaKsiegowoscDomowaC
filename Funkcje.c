@@ -53,26 +53,55 @@ int check(const char* decission){
     else return 0;
 }
 
-void loadingFromFile(const char* nameOfEntryFile){
+void loadingFromFile(const char* nameOfEntryFile, PayNode** pHead){
     printf("|%s|\n",nameOfEntryFile);
     FILE* entryFile = fopen(nameOfEntryFile, "r");
     if(entryFile) {
-        while (!feof(entryFile)) {
-            char temporaryLine[100]; // jak zmienic na char*
-            fgets(temporaryLine, 100, entryFile);
+        char temporaryLine[100]; // jak zmienic na char*
+        while (fgets(temporaryLine, 100, entryFile)) {
             printf("%s\n", temporaryLine);
 
+            /// wczytywanie do tymczasowej struktury //
+            PayNode temp; // tymczasowy node
+            char *piece = strtok(temporaryLine, " ");
+            temp.HowMuchMoney.value = piece;
+            piece = strtok(NULL, " ");
+            temp.HowMuchMoney.currency = piece;
+            piece = strtok(NULL, " ");
+            temp.CategoryOfProduct.category = piece;
+            piece = strtok(NULL, " ");
+            temp.accountNumber = piece;
+            printf("%s %s %s %s\n", temp.HowMuchMoney.value, temp.HowMuchMoney.currency,
+                   temp.CategoryOfProduct.category, temp.accountNumber); //spr
+
+            addingPaymentToNode(pHead, temp);
+
         }
-    }else{
-        perror("error");
     }
-
-
 }
 
-void addingPaymentToNode(PayNode** pHead){
+void addingPaymentToNode(PayNode** pHead,PayNode temp){
+    PayNode* newNode = malloc(sizeof(PayNode));
+    if(newNode == NULL){
+        printf("no memory for allocation\n");
+        exit(1);
+    }
+    *newNode = temp;
+    newNode->pNext = NULL;
 
-    //TODO
+    if(*pHead == NULL){ //lista pusta
+        printf("ok");
+        *pHead = newNode;
+        return;
+    }
+    printf("ok");
+     // lista zapelniona
+     PayNode* d = *pHead;
+        while(d->pNext != NULL){
+            d = d->pNext;
+        }
+        puts("ok");
+        d->pNext = newNode;
 
 }
 

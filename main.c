@@ -15,10 +15,11 @@ int main(int argc, char* argv[]){
             nameOfEntryFile = argv[counter + 1];
             }
         }
-    printf("%s\n", nameOfEntryFile);
+    printf("%s\n", nameOfEntryFile); // spradzenie
     /// wlasciwy program... wczytywanie danych... opcje...
     PayNode *pHead = NULL;
-    loadingFromFile(nameOfEntryFile);
+    loadingFromFile(nameOfEntryFile, &pHead);
+    printf("%s", pHead->accountNumber);
     //printingMenu();
     /// czyszczenie pamieci
         //TODO
