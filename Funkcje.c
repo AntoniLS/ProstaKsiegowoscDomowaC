@@ -52,66 +52,108 @@ int check(const char *decission) {
     } else return 0;
 }
 
-void loadingFromFile(const char *nameOfEntryFile, PayNode **pHead) {
+void loadingFromFile(const char *nameOfEntryFile, PayNode **node) {
     FILE *entryFile = fopen(nameOfEntryFile, "r");
     if (entryFile) {
-        char temporaryLine[100]; // jak zmienic na char*
-        while (fgets(temporaryLine, 100, entryFile)) {
-            /// wczytywanie do tymczasowej struktury //
-            InfoToPayNode temp; // tymczasowy node
-            char *piece = strtok(temporaryLine, " ");
-            printf("%s|", piece);
-            temp.HowMuchMoney.value = piece;
-            piece = strtok(NULL, " ");
-            printf("%s|", piece);
-            temp.HowMuchMoney.currency = piece;
-            piece = strtok(NULL, " ");
-            printf("%s|", piece);
-            temp.CategoryOfProduct.category = piece;
-            piece = strtok(NULL,":");
-            printf("%s|", piece);
-            temp.accountNumber = piece;
-            //printf("%s %s %s\n", temp.accountNumber, temp.HowMuchMoney.value,temp.HowMuchMoney.currency);
-            printf("\n");
-            addingPaymentToNode(pHead, temp);
+        char temporaryLine[con];
+        while(fgets(temporaryLine, con, entryFile)){
 
+            Info temp; // temporary struct
+            char* piece = strtok(temporaryLine, " "); // value
+            strcpy(temp.value, piece);
+            piece = strtok(NULL, " "); //currency
+            strcpy(temp.currency, piece);
+            piece = strtok(NULL, " "); // acountnumber
+            strcpy(temp.accountNumber, piece);
+            piece = strtok(NULL, ":"); // year
+            temp.timeOfP.year = convertToInt(piece);
+            piece = strtok(NULL, ":"); // month
+            temp.timeOfP.month = convertToInt(piece);
+            piece = strtok(NULL, " "); // day
+            temp.timeOfP.day = convertToInt(piece);
+            piece = strtok(NULL, ":"); // hour
+            temp.timeOfP.hour = convertToInt(piece);
+            piece = strtok(NULL, ":"); // minute
+            temp.timeOfP.minute = convertToInt(piece);
+            piece = strtok(NULL, " "); // seconds
+            temp.timeOfP.second = convertToInt(piece);
+            piece = strtok(NULL, "\n"); // category
+            strcpy(temp.cat.category, piece);
+
+            printf("%s %s %s %d\n", temp.value,temp.currency,temp.accountNumber, temp.timeOfP.year );
+            addingPaymentToNode(node, temp);
         }
         fclose(entryFile);
     }
+    else{
+        printf("couldn't open text file\n");
+    }
+}
+Info addingToStruct(const char * temporaryLine, Info temp){
+
 }
 
-void addingPaymentToNode(PayNode **pHead, InfoToPayNode temp) {
-    PayNode *newNode = malloc(sizeof(PayNode));
-    if (newNode == NULL) {
-        printf("no memory for allocation\n");
-        exit(1);
-    }
-    printf("%s %s %s\n", temp.accountNumber, temp.HowMuchMoney.value,temp.HowMuchMoney.currency);
-    (*newNode).InfoAboutPayment = temp;
-    printf("%s %s %s\n", (*newNode).InfoAboutPayment.accountNumber, (*newNode).InfoAboutPayment.HowMuchMoney.value,(*newNode).InfoAboutPayment.HowMuchMoney.currency);
+int convertToInt(const char* chToInt){
+    int t = atoi(chToInt);
+    return t;
+}
+
+void addingPaymentToNode(PayNode **node, Info infAboutPayment){
+    PayNode* newNode = malloc(sizeof(PayNode));
     newNode->pNext = NULL;
-
-    if (*pHead == NULL) { //lista pusta
-        printf("pHead\n");
-        *pHead = newNode;
-        return;
+    newNode->info = infAboutPayment;
+    if(*node == NULL){
+        printf("firstNode\n");
+        *node = newNode;
     }
-    // lista zapelniona
-    PayNode *d = *pHead;
-    while (d->pNext != NULL) {
-        d = d->pNext;
-        printf("loop\n");
+    else{
+        printf("newNode\n");
+        PayNode* temp = *node;
+        while(temp->pNext != NULL){
+            temp = temp->pNext;
+        }
+        temp->pNext = newNode;
     }
-    printf("nowyNode\n");
-    d->pNext = newNode;
 }
 
-void readingNodes(PayNode *pHead) {
-    while (pHead->pNext != NULL) {
-        //czytanie
-        printf("LoP\n");
-        printf("%s %s %s\n", pHead->InfoAboutPayment.accountNumber, pHead->InfoAboutPayment.HowMuchMoney.value,pHead->InfoAboutPayment.HowMuchMoney.currency);
-        pHead = pHead->pNext;
+void readingNodes(PayNode* node){
+    PayNode* temp = node;
+    if(node->pNext == NULL){
+        printf("empty");
+    }
+    while(temp){
+        printf("%s %s %s \n", temp->info.value, temp->info.currency, temp->info.accountNumber);
+        temp = temp->pNext;
+    }
+}
+
+void sortedby(PayNode* node, int option){
+    switch(option){
+        case 1:
+            //expences only
+            if(node->pNext == NULL){
+                printf("empty");
+            }
+            while(node){
+                if(node->info.plusminus[0] == '+'){ // trzeba jeszcze ustawic
+                    printf("%s %s %s", node->info.value, node->info.currency, node->info.accountNumber);
+                }
+                node = node->pNext;
+            }
+            break;
+        case 2:
+            if(node->pNext == NULL){
+                printf("empty");
+            }
+            while(node){
+                if(node->info.plusminus[0] == '-'){ // trzeba jeszcze ustawic
+                    printf("%s %s %s", node->info.value, node->info.currency, node->info.accountNumber);
+                }
+                node = node->pNext;
+            }
+            break;
+        case 3:
+            break;
     }
 }
 
