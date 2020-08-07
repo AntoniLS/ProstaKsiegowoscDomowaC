@@ -13,7 +13,6 @@ struct Time{
 };
 struct Category{
     char category[con];
-    char product[con];
 };
 typedef struct PaymentInfo{
     char plusminus[2];
@@ -34,7 +33,13 @@ int check(const char *);
 void loadingFromFile(const char*, PayNode**);
 void addingPaymentToNode(PayNode**, Info);
 void readingNodes(PayNode*);
-void sortedby(PayNode*, int);
 int convertToInt(const char* chToInt);
+Info addingToStruct(char * temporaryLinep);
+void showIncomeOutcome(PayNode* node, int option);
+void printWholeLine(PayNode* node);
+void printingMenu(PayNode** node);
+void timeList(PayNode* node);
+void familyMemberList(PayNode* node);
+void clearBuffer();
 
 #endif //PROSTAKSIEGOWOSCDOMOWAC_FUNKCJE_H
