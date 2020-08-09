@@ -24,8 +24,8 @@ int main(int argc, char* argv[]){
     loadingFromFile(nameOfEntryFile, &pHead);
     readingNodes(pHead);
     printf("========\n");
-    showIncomeOutcome(pHead, 2);
-    printingMenu(&pHead);
+   // showIncomeOutcome(pHead, 2); // gdy jest aktywne przy uruchomieniu z pustym buforem (chyba wywoluje blad)?
+    programExecution(&pHead);
 
     // czyszczenie pamieci /////////////
         //TODO

@@ -2,11 +2,20 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <unistd.h>
-#include <stdbool.h>
 
 #include "Funkcje.h"
 
-void printingMenu(PayNode** node) {
+typedef int bool;    // dodanie typu bool
+#define true 1
+#define false 0
+
+void programExecution(PayNode** node){ // <----- Główna część programu
+    Prof* profileList = NULL; // poczatek listy profilow
+    printingMenu(node, &profileList); // przekazanie parametrow do funkcji odpowiedzialnej za interakcje z programem
+
+    // TODO czyszczenie listy z pamieci profilow
+}
+void printingMenu(PayNode** node, Prof** profNode ) {
     bool repeatMenu = true;
     do {
         char decision[10];
@@ -22,7 +31,7 @@ void printingMenu(PayNode** node) {
         puts("[8] Quit");
         printf("Choose one of above [first digit is valid] >");
         scanf("%s", decision);
-        printf("%s %c", decision, decision[0]);// check
+        //printf("%s %c", decision, decision[0]);// check
         printf("\n");
         int ifCorrect = check(decision);
         printf("in main %d", ifCorrect); // sprawdzenie ktora liczba zostala przyjeta jako  wybór
@@ -40,7 +49,7 @@ void printingMenu(PayNode** node) {
                 showIncomeOutcome(*node, decisionInsideSwitch);
                 break;
             case 4: //Show spending through time
-                timeList(*node); //?
+                timeList(*node /*,*profNode*/); //?
                 break;
             case 5: //Show all spending by specific family member
                 familyMemberList(*node); //?
@@ -50,6 +59,7 @@ void printingMenu(PayNode** node) {
                 break;
             case 7: // OPTIONS
                 //TODO OPCJE dodawanie profilow / usuwanie profilow
+                optionsMenu(profNode);
                 break;
             case 8:
                 repeatMenu = false;
@@ -64,6 +74,63 @@ void printingMenu(PayNode** node) {
         printf("\n");
     }while(repeatMenu);
 };
+void optionsMenu(Prof** profNode){
+    char decision[10];
+    int decisionInsideSwitch;
+
+    puts("[1] Show Profiles");
+    puts("[2] Add Profile");
+    puts("[3] Rename Profile");
+    puts("[4] Delete Profile");
+    scanf("%s", decision);
+    int ifCorrect = check(decision);
+
+    switch(ifCorrect){
+        case 1: //Show Profiles
+            showProfiles(*profNode);
+            break;
+        case 2: //Add Profile
+            addProfileNode(profNode);
+            break;
+        case 3: //Rename Profile
+            break;
+        case 4: //Delete Profile
+            break;
+        default:
+            break;
+    }
+}
+
+void addProfileNode(Prof** profNode){
+    Prof* tempNode = malloc(sizeof(Prof));
+    tempNode->profileName = profileNewName(); // TODO
+    tempNode->accountNumber = profileNewAccountNumber(); // TODO
+
+    if(*profNode == NULL){
+        printf("firstNode\n");
+        *profNode = tempNode;
+    }
+    else {
+        printf("newNode\n");
+        Prof *temp = *profNode;
+        while (temp->pNext != NULL) {
+            temp = temp->pNext;
+        }
+        temp->pNext = tempNode;
+    }
+}
+
+void showProfiles(Prof* profNode){ // print profile names and assigned to them accountnumbers
+    Prof* temp = profNode;
+    if(!temp){
+        printf("empty");
+    }else{
+        while(temp){
+            printf("%s : %s",temp->profileName, temp->accountNumber );
+        }
+        temp = temp->pNext;
+    }
+}
 
 void timeList(PayNode* node){ // drukowanie zgdonie z ramami czasowymi
 
@@ -184,9 +251,7 @@ void showIncomeOutcome(PayNode* node, int option){
                 }
                 node = node->pNext;
             }
-            clearBuffer();
-            puts("Press enter to continue");
-            getchar(); // to temporary pause
+            waiting();
             break;
         case 2:
             //income
@@ -199,6 +264,7 @@ void showIncomeOutcome(PayNode* node, int option){
                 }
                 node = node->pNext;
             }
+            waiting();
             break;
         default:
             printf("nothing was chosen, (Error)");
@@ -213,6 +279,12 @@ void printWholeLine(PayNode* node){ // wyswietla wszystkie dane na temat transak
    printf("%d:%02d:%02d ",node->info.timeOfP.year,node->info.timeOfP.month,node->info.timeOfP.day); // dane odpowiednio sformatowane
    printf("%02d:%02d:%02d ", node->info.timeOfP.hour, node->info.timeOfP.minute, node->info.timeOfP.second);
    printf("%s \n", node->info.cat.category);
+}
+
+void waiting(){ // czeka na reakcje uzytkownika
+    clearBuffer();
+    puts("Press enter to continue");
+    getchar(); // to temporary pause
 }
 
 void  conditionalReading(PayNode* node, char pm){ // ???

@@ -28,6 +28,12 @@ typedef struct Payment{
     struct PaymentInfo info;
 }PayNode;
 
+typedef struct Profile{
+    char accountNumber[con];
+    char profileName[con];
+    struct Profile* pNext;
+}Prof;
+
 void printingMenu();
 int check(const char *);
 void loadingFromFile(const char*, PayNode**);
@@ -37,9 +43,14 @@ int convertToInt(const char* chToInt);
 Info addingToStruct(char * temporaryLinep);
 void showIncomeOutcome(PayNode* node, int option);
 void printWholeLine(PayNode* node);
-void printingMenu(PayNode** node);
+void printingMenu(PayNode** node,Prof** profNode);
 void timeList(PayNode* node);
 void familyMemberList(PayNode* node);
 void clearBuffer();
+void programExecution(PayNode** node);
+void waiting();
+void optionsMenu(Prof** profNode);
+void showProfiles(Prof* profNode);
+void addProfileNode(Prof** profNode);
 
 #endif //PROSTAKSIEGOWOSCDOMOWAC_FUNKCJE_H
