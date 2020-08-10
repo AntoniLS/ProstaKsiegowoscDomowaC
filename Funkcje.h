@@ -3,6 +3,10 @@
 #define PROSTAKSIEGOWOSCDOMOWAC_FUNKCJE_H
 #define con 100
 
+typedef int bool;    // dodanie typu bool
+#define true 1
+#define false 0
+
 struct Time{
     int second;
     int minute;
@@ -27,11 +31,14 @@ typedef struct Payment{
     struct Payment* pNext;
     struct PaymentInfo info;
 }PayNode;
-
-typedef struct Profile{
+typedef struct ProfileInfo{
     char accountNumber[con];
     char profileName[con];
+}PInfo;
+
+typedef struct Profile{
     struct Profile* pNext;
+    struct ProfileInfo info;
 }Prof;
 
 void printingMenu();
@@ -47,10 +54,11 @@ void printingMenu(PayNode** node,Prof** profNode);
 void timeList(PayNode* node);
 void familyMemberList(PayNode* node);
 void clearBuffer();
-void programExecution(PayNode** node);
+void programExecution(PayNode** node, Prof** profileList);
 void waiting();
 void optionsMenu(Prof** profNode);
 void showProfiles(Prof* profNode);
 void addProfileNode(Prof** profNode);
+PInfo getProfileNameAndAccountNumber();
 
 #endif //PROSTAKSIEGOWOSCDOMOWAC_FUNKCJE_H

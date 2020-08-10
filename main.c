@@ -20,12 +20,13 @@ int main(int argc, char* argv[]){
 
     // wlasciwy program... wczytywanie danych... opcje... //////////////
 
-    PayNode *pHead = NULL;
+    PayNode *pHead = NULL;// poczatek listy rachunkow
+    Prof *profileList = NULL; // poczatek listy profilow
     loadingFromFile(nameOfEntryFile, &pHead);
     readingNodes(pHead);
     printf("========\n");
    // showIncomeOutcome(pHead, 2); // gdy jest aktywne przy uruchomieniu z pustym buforem (chyba wywoluje blad)?
-    programExecution(&pHead);
+    programExecution(&pHead, &profileList);
 
     // czyszczenie pamieci /////////////
         //TODO

@@ -5,15 +5,12 @@
 
 #include "Funkcje.h"
 
-typedef int bool;    // dodanie typu bool
-#define true 1
-#define false 0
 
-void programExecution(PayNode** node){ // <----- Główna część programu
-    Prof* profileList = NULL; // poczatek listy profilow
-    printingMenu(node, &profileList); // przekazanie parametrow do funkcji odpowiedzialnej za interakcje z programem
+void programExecution(PayNode** node, Prof** profileList){ // <----- Główna część programu
 
-    // TODO czyszczenie listy z pamieci profilow
+    printingMenu(node, profileList); // przekazanie parametrow do funkcji odpowiedzialnej za interakcje z programem
+
+    //TODO czyszczenie pamieci
 }
 void printingMenu(PayNode** node, Prof** profNode ) {
     bool repeatMenu = true;
@@ -27,14 +24,14 @@ void printingMenu(PayNode** node, Prof** profNode ) {
         puts("[4] Show spending through time");
         puts("[5] Show all spending by specific family member");
         puts("[6] Show sorted by categories");
-        puts("[7] OPTIONS");
+        puts("[7] PROFILES");
         puts("[8] Quit");
         printf("Choose one of above [first digit is valid] >");
         scanf("%s", decision);
         //printf("%s %c", decision, decision[0]);// check
         printf("\n");
         int ifCorrect = check(decision);
-        printf("in main %d", ifCorrect); // sprawdzenie ktora liczba zostala przyjeta jako  wybór
+        printf("in main %d\n", ifCorrect); // sprawdzenie ktora liczba zostala przyjeta jako  wybór
 
         switch (ifCorrect) {
             case 1: //Show whole bill from all forwarded transactions
@@ -57,7 +54,7 @@ void printingMenu(PayNode** node, Prof** profNode ) {
             case 6: //Show sorted by categories
                 //TODO zgodnie z kategiariami
                 break;
-            case 7: // OPTIONS
+            case 7: // PROFILES
                 //TODO OPCJE dodawanie profilow / usuwanie profilow
                 optionsMenu(profNode);
                 break;
@@ -88,6 +85,10 @@ void optionsMenu(Prof** profNode){
     switch(ifCorrect){
         case 1: //Show Profiles
             showProfiles(*profNode);
+//            printf("%s",(*profNode)->info.profileName); // SPRAWDZENIE
+//            printf("%s",(*profNode)->info.accountNumber);
+//            printf("%s",(*profNode)->pNext->info.profileName);
+//            printf("%s",(*profNode)->pNext->info.accountNumber);
             break;
         case 2: //Add Profile
             addProfileNode(profNode);
@@ -103,8 +104,16 @@ void optionsMenu(Prof** profNode){
 
 void addProfileNode(Prof** profNode){
     Prof* tempNode = malloc(sizeof(Prof));
-    tempNode->profileName = profileNewName(); // TODO
-    tempNode->accountNumber = profileNewAccountNumber(); // TODO
+    tempNode->pNext = NULL;
+    PInfo tempInfo = getProfileNameAndAccountNumber();
+    tempNode->info = tempInfo;
+//    strcpy(tempNode->info.profileName, profileNewName());
+//    printf("%s\n", tempNode->info.profileName); // sprawdzenie
+//    char tempName[con];
+//    strcpy(tempName, tempNode->info.profileName);
+//    printf("%s\n", tempName); // sprawdzenie
+//    strcpy(tempNode->info.accountNumber, profileNewAccountNumber(tempName));
+//    printf("%s\n", tempNode->info.accountNumber);
 
     if(*profNode == NULL){
         printf("firstNode\n");
@@ -119,16 +128,56 @@ void addProfileNode(Prof** profNode){
         temp->pNext = tempNode;
     }
 }
+PInfo getProfileNameAndAccountNumber(){
+    PInfo temporaryStruct;
+    char temp[con];
+    char yesOrNo[con];
+    bool continueLoopOne = true;
+    bool continueLoopTwo = true;
+    do {
+        printf("Profile Name >");
+        clearBuffer();
+        scanf("%s", temp);
+        printf("New profile name: [%s] _is it ok?_\n", temp);
+        puts("[1] Yes");
+        puts("[2] No"); // tak naprawde cala reszta powoduje ponowne wykonanie
+
+        clearBuffer();
+        scanf("%s", yesOrNo);
+        int ConvertedYesOrNo = check(yesOrNo);
+        if(ConvertedYesOrNo == 1) {
+            strcpy(temporaryStruct.profileName, temp);
+            continueLoopOne = false;
+        }
+    }while(continueLoopOne);
+    do {
+        printf("Account Number assigned to profile %s >", temporaryStruct.profileName);
+        clearBuffer();
+        scanf("%s", temp);
+        printf("AccountNumber: [%s] _is it ok?_\n", temp);
+        puts("[1] Yes");
+        puts("[2] No"); // tak naprawde cala reszta powoduje ponowne wykonanie
+
+        clearBuffer();
+        scanf("%s", yesOrNo);
+        int ConvertedYesOrNo = check(yesOrNo);
+        if(ConvertedYesOrNo == 1) {
+            strcpy(temporaryStruct.accountNumber, temp);
+            continueLoopTwo = false;
+        }
+    }while(continueLoopTwo);
+    return temporaryStruct;
+}
 
 void showProfiles(Prof* profNode){ // print profile names and assigned to them accountnumbers
     Prof* temp = profNode;
-    if(!temp){
+    if(temp == NULL){
         printf("empty");
     }else{
-        while(temp){
-            printf("%s : %s",temp->profileName, temp->accountNumber );
+        while(temp != NULL){
+            printf("%s : %s\n",temp->info.profileName, temp->info.accountNumber );
+            temp = temp->pNext;
         }
-        temp = temp->pNext;
     }
 }
 
@@ -236,6 +285,7 @@ void readingNodes(PayNode* node){
         printWholeLine(temp);
         temp = temp->pNext;
     }
+    waiting();
 }
 
 void showIncomeOutcome(PayNode* node, int option){
