@@ -52,7 +52,7 @@ void showIncomeOutcome(PayNode* node, int option);
 void printWholeLine(PayNode* node);
 void printingMenu(PayNode** node,Prof** profNode);
 void timeList(PayNode* node);
-void familyMemberList(PayNode* node);
+void familyMemberList(PayNode* node, Prof* profNode);
 void clearBuffer();
 void programExecution(PayNode** node, Prof** profileList);
 void waiting();

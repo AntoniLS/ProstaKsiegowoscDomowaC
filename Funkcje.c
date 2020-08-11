@@ -5,101 +5,11 @@
 
 #include "Funkcje.h"
 
-
 void programExecution(PayNode** node, Prof** profileList){ // <----- Główna część programu
 
     printingMenu(node, profileList); // przekazanie parametrow do funkcji odpowiedzialnej za interakcje z programem
 
     //TODO czyszczenie pamieci
-}
-void printingMenu(PayNode** node, Prof** profNode ) {
-    bool repeatMenu = true;
-    do {
-        char decision[10];
-        int decisionInsideSwitch;
-        //TODO paski procentowe
-        puts("[1] Show whole bill from all forwarded transactions");
-        puts("[2] Show income");
-        puts("[3] Show outcome");
-        puts("[4] Show spending through time");
-        puts("[5] Show all spending by specific family member");
-        puts("[6] Show sorted by categories");
-        puts("[7] PROFILES");
-        puts("[8] Quit");
-        printf("Choose one of above [first digit is valid] >");
-        scanf("%s", decision);
-        //printf("%s %c", decision, decision[0]);// check
-        printf("\n");
-        int ifCorrect = check(decision);
-        printf("in main %d\n", ifCorrect); // sprawdzenie ktora liczba zostala przyjeta jako  wybór
-
-        switch (ifCorrect) {
-            case 1: //Show whole bill from all forwarded transactions
-                readingNodes(*node);
-                break;
-            case 2: //Show income
-                decisionInsideSwitch = 1; // w funkcji oznacza dochód
-                showIncomeOutcome(*node, decisionInsideSwitch);
-                break;
-            case 3: //Show outcome
-                decisionInsideSwitch = 2; // w funkcji oznacza pieniądze wydane
-                showIncomeOutcome(*node, decisionInsideSwitch);
-                break;
-            case 4: //Show spending through time
-                timeList(*node /*,*profNode*/); //?
-                break;
-            case 5: //Show all spending by specific family member
-                familyMemberList(*node); //?
-                break;
-            case 6: //Show sorted by categories
-                //TODO zgodnie z kategiariami
-                break;
-            case 7: // PROFILES
-                //TODO OPCJE dodawanie profilow / usuwanie profilow
-                optionsMenu(profNode);
-                break;
-            case 8:
-                repeatMenu = false;
-                break;
-            default: // gdy check zwroci 0
-                printf("Incorrect decision\n");
-                sleep(3);
-                //printf("\033c"); // wipe terminal //doesnt work at all
-                system("clear");
-                break;
-        }
-        printf("\n");
-    }while(repeatMenu);
-};
-void optionsMenu(Prof** profNode){
-    char decision[10];
-    int decisionInsideSwitch;
-
-    puts("[1] Show Profiles");
-    puts("[2] Add Profile");
-    puts("[3] Rename Profile");
-    puts("[4] Delete Profile");
-    scanf("%s", decision);
-    int ifCorrect = check(decision);
-
-    switch(ifCorrect){
-        case 1: //Show Profiles
-            showProfiles(*profNode);
-//            printf("%s",(*profNode)->info.profileName); // SPRAWDZENIE
-//            printf("%s",(*profNode)->info.accountNumber);
-//            printf("%s",(*profNode)->pNext->info.profileName);
-//            printf("%s",(*profNode)->pNext->info.accountNumber);
-            break;
-        case 2: //Add Profile
-            addProfileNode(profNode);
-            break;
-        case 3: //Rename Profile
-            break;
-        case 4: //Delete Profile
-            break;
-        default:
-            break;
-    }
 }
 
 void addProfileNode(Prof** profNode){
@@ -172,7 +82,7 @@ PInfo getProfileNameAndAccountNumber(){
 void showProfiles(Prof* profNode){ // print profile names and assigned to them accountnumbers
     Prof* temp = profNode;
     if(temp == NULL){
-        printf("empty");
+        printf("Empty");
     }else{
         while(temp != NULL){
             printf("%s : %s\n",temp->info.profileName, temp->info.accountNumber );
@@ -184,8 +94,31 @@ void showProfiles(Prof* profNode){ // print profile names and assigned to them a
 void timeList(PayNode* node){ // drukowanie zgdonie z ramami czasowymi
 
 }
-void familyMemberList(PayNode* node){
+void familyMemberList(PayNode* node, Prof* profNode){
 
+    Prof* temp = profNode;
+    if(profNode == NULL){ // jesli nie ma profilow
+        puts("Empty");
+    }
+    else{
+
+        while (temp != NULL) { // idziemy po wszystkich profilach
+            printf("Name: %s | Account number: %s\n", temp->info.profileName, temp->info.accountNumber);
+            PayNode *tempPayments = node;
+            if (tempPayments == NULL) { // jesli nie ma zadnych platnosci
+                puts("Empty");
+            }
+            else{
+                while (tempPayments != NULL) { // jesli sa platnosci idziemy po wszystkich
+                    if (!strcmp(temp->info.accountNumber, tempPayments->info.accountNumber)) { //jesli numer konta profilu jest zgodny z numerem konta zawargego w platnosci
+                        printWholeLine(tempPayments); // pokazujmy platnosc przypisana do profilu
+                    }
+                    tempPayments = tempPayments->pNext;
+                }
+            }
+            temp = temp->pNext;
+        }
+    }
 }
 
 int check(const char *decision) { // sprawdza czy podany string jest liczba
@@ -195,6 +128,7 @@ int check(const char *decision) { // sprawdza czy podany string jest liczba
         return r; // jest zwraca to samo w formie liczy calkowitej
     } else return 0; // nie jest, domyslnie zwraca zero
 }
+
 void clearBuffer(){
     char temp;
     while((temp = getchar()) != '\n' && temp != EOF) {/*run*/}
@@ -242,6 +176,7 @@ Info addingToStruct(char * temporaryLine){
     piece = strtok(NULL, "\n"); // category
     strcpy(temp.cat.category, piece);
 
+    //TODO jak ominac ewentualne bledy na poczatku ktore mogly by zastapic +/-
     //income or outcome
     if(temp.value[0] == '+'){
         strcpy(temp.plusminus, "+");
@@ -336,6 +271,11 @@ void waiting(){ // czeka na reakcje uzytkownika
     puts("Press enter to continue");
     getchar(); // to temporary pause
 }
+
+
+
+
+/////////////////////////////////////// NA RAZIE NIEPOTRZEBNE ////////////////////////////////////////////////////
 
 void  conditionalReading(PayNode* node, char pm){ // ???
     if(node->pNext == NULL){

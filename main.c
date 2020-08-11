@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+
+#include "FunkcjeObslugujaceMenu.c"
 #include "Funkcje.h"
 #include "Funkcje.c"
 
@@ -16,20 +18,20 @@ int main(int argc, char* argv[]){
             nameOfEntryFile = argv[counter + 1];
             }
         }
-   // printf("%s\n", nameOfEntryFile); // spradzenie
+    // printf("%s\n", nameOfEntryFile); // spradzenie
 
-    // wlasciwy program... wczytywanie danych... opcje... //////////////
+    // wlasciwy program... wczytywanie danych... menu... //////////////
 
     PayNode *pHead = NULL;// poczatek listy rachunkow
     Prof *profileList = NULL; // poczatek listy profilow
-    loadingFromFile(nameOfEntryFile, &pHead);
-    readingNodes(pHead);
+    loadingFromFile(nameOfEntryFile, &pHead); // wczytywanie danych poczatkowych z pliku
+    readingNodes(pHead); // sprawdzenie
     printf("========\n");
-   // showIncomeOutcome(pHead, 2); // gdy jest aktywne przy uruchomieniu z pustym buforem (chyba wywoluje blad)?
-    programExecution(&pHead, &profileList);
+   // showIncomeOutcome(pHead, 2); // gdy jest aktywne przy uruchomieniu z pustym buforem (chyba wywoluje blad)? //TODO
+    programExecution(&pHead, &profileList); // wywolanie wlasciwego programu, przekazanie listy rachunkow i profilow
 
     // czyszczenie pamieci /////////////
-        //TODO
+        //TODO czyszczenie pamieci
     return 0;
 }
 
