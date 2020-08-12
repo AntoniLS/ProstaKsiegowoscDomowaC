@@ -79,6 +79,47 @@ PInfo getProfileNameAndAccountNumber(){
     return temporaryStruct;
 }
 
+void renameProfile(Prof** profNode){
+    if(*profNode == NULL){ // jesli nie ma zadnych profilow konczymy
+        puts("There are no profiles, to rename");
+        return;
+    }
+    showProfiles(*profNode);
+    char tempName[con];
+
+    Prof* temp = *profNode;
+    printf("Type profile name that you want to rename >");
+    clearBuffer();
+    scanf("%s", tempName);
+    while(temp != NULL){
+        if(!strcmp(tempName, temp->info.profileName)){
+            char tempNewName[con];
+            char yesOrNo[con];
+            bool continueLoop = true;
+            do {
+                printf("Changing %s to >", tempName);
+                clearBuffer();
+                scanf("%s", tempNewName);
+                printf("New profile name: [%s] _is it ok?_\n", tempNewName);
+                puts("[1] Yes");
+                puts("[2] No"); // tak naprawde cala reszta powoduje ponowne wykonanie
+
+                clearBuffer();
+                scanf("%s", yesOrNo);
+                int ConvertedYesOrNo = check(yesOrNo);
+                if(ConvertedYesOrNo == 1) {
+                    strcpy(temp->info.profileName, tempNewName);
+                    continueLoop = false;
+                    return;
+                }
+            }while(continueLoop);
+        }
+        temp = temp->pNext;
+    }
+    printf("There is no such profile");
+    //TODO Ewentualne dodatki typu peta do czasu az zmienimy, chyba ze nie istnieje to return
+}
+
 void showProfiles(Prof* profNode){ // print profile names and assigned to them accountnumbers
     Prof* temp = profNode;
     if(temp == NULL){
@@ -94,11 +135,11 @@ void showProfiles(Prof* profNode){ // print profile names and assigned to them a
 void timeList(PayNode* node){ // drukowanie zgdonie z ramami czasowymi
 
 }
-void familyMemberList(PayNode* node, Prof* profNode){
+void expensesSortedByMemberList(PayNode* node, Prof* profNode){
 
     Prof* temp = profNode;
     if(profNode == NULL){ // jesli nie ma profilow
-        puts("Empty");
+        puts("Empty profile list");
     }
     else{
 
@@ -124,7 +165,7 @@ void familyMemberList(PayNode* node, Prof* profNode){
 int check(const char *decision) { // sprawdza czy podany string jest liczba
     if (isdigit(decision[0])) {
         int r = atoi(decision);
-        printf("in funct %d\n", r);
+        //printf("in funct %d\n", r); // sprawdzenie!
         return r; // jest zwraca to samo w formie liczy calkowitej
     } else return 0; // nie jest, domyslnie zwraca zero
 }
@@ -152,7 +193,7 @@ void loadingFromFile(const char *nameOfEntryFile, PayNode **node) {
         printf("couldn't open text file\n");
     }
 }
-Info addingToStruct(char * temporaryLine){
+Info addingToStruct(char * temporaryLine){ // Wyłuskanie informacji z pliku tekstowego
     char* tempLine = temporaryLine;
     Info temp;
     char* piece = strtok(tempLine, " "); // value
@@ -271,6 +312,8 @@ void waiting(){ // czeka na reakcje uzytkownika
     puts("Press enter to continue");
     getchar(); // to temporary pause
 }
+
+
 
 
 

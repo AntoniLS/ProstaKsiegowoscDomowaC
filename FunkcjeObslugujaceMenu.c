@@ -24,7 +24,7 @@ void printingMenu(PayNode** node, Prof** profNode ) {
         //printf("%s %c", decision, decision[0]);// check
         printf("\n");
         int ifCorrect = check(decision);
-        printf("in main %d\n", ifCorrect); // sprawdzenie ktora liczba zostala przyjeta jako  wybór
+        //printf("in main %d\n", ifCorrect); // sprawdzenie! ktora liczba zostala przyjeta jako  wybór
 
         switch (ifCorrect) {
             case 1: //Show whole bill from all forwarded transactions
@@ -41,15 +41,15 @@ void printingMenu(PayNode** node, Prof** profNode ) {
             case 4: //Show spending through time
                 timeList(*node /*,*profNode*/); //?
                 break;
-            case 5: //Show all spending by specific family member
-                familyMemberList(*node, *profNode);
+            case 5: //Show all spending by specific family member [after creating profiles]
+                expensesSortedByMemberList(*node, *profNode);
                 break;
             case 6: //Show sorted by categories
                 //TODO zgodnie z kategiariami
                 break;
             case 7: // PROFILES
                 //TODO OPCJE dodawanie profilow / usuwanie profilow
-                optionsMenu(profNode);
+                profilesMenu(profNode);
                 break;
             case 8:
 
@@ -66,10 +66,8 @@ void printingMenu(PayNode** node, Prof** profNode ) {
     }while(repeatMenu);
 }
 
-void optionsMenu(Prof** profNode){
+void profilesMenu(Prof** profNode){
     char decision[10];
-    int decisionInsideSwitch;
-
     puts("[1] Show Profiles");
     puts("[2] Add Profile");
     puts("[3] Rename Profile");
@@ -89,10 +87,12 @@ void optionsMenu(Prof** profNode){
             addProfileNode(profNode);
             break;
         case 3: //Rename Profile
-            //TODO
+        //TODO
+            renameProfile(profNode);
             break;
         case 4: //Delete Profile
-            //TODO
+        //TODO
+            //deleteProfile(ProfNode);
             break;
         default:
             break;

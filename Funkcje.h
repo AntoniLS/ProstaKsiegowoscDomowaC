@@ -52,13 +52,14 @@ void showIncomeOutcome(PayNode* node, int option);
 void printWholeLine(PayNode* node);
 void printingMenu(PayNode** node,Prof** profNode);
 void timeList(PayNode* node);
-void familyMemberList(PayNode* node, Prof* profNode);
+void expensesSortedByMemberList(PayNode* node, Prof* profNode);
 void clearBuffer();
 void programExecution(PayNode** node, Prof** profileList);
 void waiting();
-void optionsMenu(Prof** profNode);
+void profilesMenu(Prof** profNode);
 void showProfiles(Prof* profNode);
 void addProfileNode(Prof** profNode);
 PInfo getProfileNameAndAccountNumber();
+void renameProfile(Prof** profNode);
 
 #endif //PROSTAKSIEGOWOSCDOMOWAC_FUNKCJE_H
