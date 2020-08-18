@@ -5,6 +5,8 @@
 
 #include "Funkcje.h"
 
+#define numberOfCategories 5
+
 void programExecution(PayNode** node, Prof** profileList){ // <----- Główna część programu
 
     printingMenu(node, profileList); // przekazanie parametrow do funkcji odpowiedzialnej za interakcje z programem
@@ -133,6 +135,7 @@ void showProfiles(Prof* profNode){ // print profile names and assigned to them a
 }
 
 void timeList(PayNode* node){ // drukowanie zgdonie z ramami czasowymi
+    // sortowanie zgdonie z node->info.timeOfP.sortValue
 
 }
 void expensesSortedByMemberList(PayNode* node, Prof* profNode){
@@ -217,6 +220,9 @@ Info addingToStruct(char * temporaryLine){ // Wyłuskanie informacji z pliku tek
     piece = strtok(NULL, "\n"); // category
     strcpy(temp.cat.category, piece);
 
+    int valueSetFromTime = getTimeValue(temp);
+    temp.timeOfP.sortValue = valueSetFromTime;
+
     //TODO jak ominac ewentualne bledy na poczatku ktore mogly by zastapic +/-
     //income or outcome
     if(temp.value[0] == '+'){
@@ -227,6 +233,17 @@ Info addingToStruct(char * temporaryLine){ // Wyłuskanie informacji z pliku tek
     }
 
     return temp;
+}
+int getTimeValue(Info inf){
+    int year = inf.timeOfP.year * 10000000000;
+    int month = inf.timeOfP.month * 100000000;
+    int day = inf.timeOfP.day * 1000000;
+    int hour = inf.timeOfP.hour * 10000;
+    int minute = inf.timeOfP.minute * 100;
+    int second = inf.timeOfP.second;
+
+    // now add together to get one number and return it
+    return year + month + day + hour + minute + second;
 }
 
 int convertToInt(const char* chToInt){
@@ -311,6 +328,26 @@ void waiting(){ // czeka na reakcje uzytkownika
     clearBuffer();
     puts("Press enter to continue");
     getchar(); // to temporary pause
+}
+
+void showByCategories(PayNode* node){
+        //dostepne kategoire
+       const char* categories[numberOfCategories] = {"BANK", "SUBSCRIPTION", "ELECTROMARKET", "SUBSCRIPTION", "CLOTHES"};
+       //TODO wersja dynamiczna? gdyby kategorii bylo wiecej
+
+        //wypisywanie
+       for(int i = 0; i<numberOfCategories; i++){
+           printf("%s\n", categories[i]);
+           PayNode* temp = node;
+           if(!temp){
+               puts("[empty]");
+           }while(temp){
+               if(!strcmp(temp->info.cat.category,categories[i])){
+                   printWholeLine(temp);
+               }
+               temp = temp->pNext;
+           }
+       }
 }
 
 

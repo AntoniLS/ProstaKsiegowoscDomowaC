@@ -45,10 +45,10 @@ void printingMenu(PayNode** node, Prof** profNode ) {
                 expensesSortedByMemberList(*node, *profNode);
                 break;
             case 6: //Show sorted by categories
-                //TODO zgodnie z kategiariami
+                showByCategories(*node);
                 break;
             case 7: // PROFILES
-                //TODO OPCJE dodawanie profilow / usuwanie profilow
+                //TODO  usuwanie profilow
                 profilesMenu(profNode);
                 break;
             case 8:
@@ -87,11 +87,10 @@ void profilesMenu(Prof** profNode){
             addProfileNode(profNode);
             break;
         case 3: //Rename Profile
-        //TODO
             renameProfile(profNode);
             break;
         case 4: //Delete Profile
-        //TODO
+            //TODO
             //deleteProfile(ProfNode);
             break;
         default:

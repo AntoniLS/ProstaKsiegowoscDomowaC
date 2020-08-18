@@ -14,6 +14,7 @@ struct Time{
     int day;
     int month;
     int year;
+    int sortValue;
 };
 struct Category{
     char category[con];
@@ -61,5 +62,7 @@ void showProfiles(Prof* profNode);
 void addProfileNode(Prof** profNode);
 PInfo getProfileNameAndAccountNumber();
 void renameProfile(Prof** profNode);
+void showByCategories(PayNode* node);
+int getTimeValue(Info inf);
 
 #endif //PROSTAKSIEGOWOSCDOMOWAC_FUNKCJE_H
