@@ -7,6 +7,8 @@
 #include "Funkcje.h"
 
 #define numberOfCategories 5
+#define alot 30000000000000
+
 
 void programExecution(PayNode** node, Prof** profileList){ // <----- Główna część programu
 
@@ -128,24 +130,34 @@ void showProfiles(Prof* profNode){ // print profile names and assigned to them a
     }
 }
 
-void timeList(PayNode* node){ // drukowanie zgdonie z ramami czasowymi
+void timeList(PayNode** node){ // drukowanie zgdonie z ramami czasowymi
     // sortowanie zgdonie z node->info.timeOfP.sortValue
-    long long min = INFINITY;
-    int howManyNodes = countingList(node);
+    long long min = alot;
+    int howManyNodes = countingList(*node);
     //printf("%d", howManyNodes);
     for(int i = howManyNodes; i>0 ; i--){
-        PayNode* temp = node;
+        PayNode* temp = *node;
         while(temp){
             if(temp->info.timeOfP.sortValue < min && temp->info.timeOfP.beforeOrAfter == false){
                 min = temp->info.timeOfP.sortValue;
             }
             temp = temp->pNext;
         }
-        printf("%lld\n", min);
-
+        //printf("%lld\n", min);
+        PayNode* temp2 = *node;
+        while(temp2){
+            if(temp2->info.timeOfP.sortValue == min){
+                temp2->info.timeOfP.beforeOrAfter = true;
+                printWholeLine(temp2);
+            }
+            temp2 = temp2->pNext;
+        }
+        //printf("%lld\n", min);
+        min = alot;
     }
 
 }
+
 void expensesSortedByMemberList(PayNode* node, Prof* profNode){
 
     Prof* temp = profNode;

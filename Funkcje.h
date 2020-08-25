@@ -53,7 +53,7 @@ Info addingToStruct(char * temporaryLinep);
 void showIncomeOutcome(PayNode* node, int option);
 void printWholeLine(PayNode* node);
 void printingMenu(PayNode** node,Prof** profNode);
-void timeList(PayNode* node);
+void timeList(PayNode** node);
 void expensesSortedByMemberList(PayNode* node, Prof* profNode);
 void clearBuffer();
 void programExecution(PayNode** node, Prof** profileList);
