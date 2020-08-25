@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <unistd.h>
+#include <math.h>
 
 #include "Funkcje.h"
 
@@ -19,13 +20,6 @@ void addProfileNode(Prof** profNode){
     tempNode->pNext = NULL;
     PInfo tempInfo = getProfileNameAndAccountNumber();
     tempNode->info = tempInfo;
-//    strcpy(tempNode->info.profileName, profileNewName());
-//    printf("%s\n", tempNode->info.profileName); // sprawdzenie
-//    char tempName[con];
-//    strcpy(tempName, tempNode->info.profileName);
-//    printf("%s\n", tempName); // sprawdzenie
-//    strcpy(tempNode->info.accountNumber, profileNewAccountNumber(tempName));
-//    printf("%s\n", tempNode->info.accountNumber);
 
     if(*profNode == NULL){
         printf("firstNode\n");
@@ -136,8 +130,20 @@ void showProfiles(Prof* profNode){ // print profile names and assigned to them a
 
 void timeList(PayNode* node){ // drukowanie zgdonie z ramami czasowymi
     // sortowanie zgdonie z node->info.timeOfP.sortValue
+    long long min = INFINITY;
+    int howManyNodes = countingList(node);
+    //printf("%d", howManyNodes);
+    for(int i = howManyNodes; i>0 ; i--){
+        PayNode* temp = node;
+        while(temp){
+            if(temp->info.timeOfP.sortValue < min && temp->info.timeOfP.beforeOrAfter == false){
+                min = temp->info.timeOfP.sortValue;
+            }
+            temp = temp->pNext;
+        }
+        printf("%lld\n", min);
 
-
+    }
 
 }
 void expensesSortedByMemberList(PayNode* node, Prof* profNode){
@@ -223,7 +229,8 @@ Info addingToStruct(char * temporaryLine){ // Wyłuskanie informacji z pliku tek
     strcpy(temp.cat.category, piece);
 
     //pseudo wyjatkowa liczba dla kazdego node'a bazujaca na czasie w ktorym zostala wykonana platnosc
-    int valueSetFromTime = getTimeValue(temp);
+    long long valueSetFromTime = getTimeValue(temp);
+    printf("%lld", valueSetFromTime);
     temp.timeOfP.sortValue = valueSetFromTime;
 
     //aby latwiej wyswitlic w odpowiedniej kolejnosci
@@ -240,13 +247,13 @@ Info addingToStruct(char * temporaryLine){ // Wyłuskanie informacji z pliku tek
 
     return temp;
 }
-int getTimeValue(Info inf){
-    int year = inf.timeOfP.year * 10000000000;
-    int month = inf.timeOfP.month * 100000000;
-    int day = inf.timeOfP.day * 1000000;
-    int hour = inf.timeOfP.hour * 10000;
-    int minute = inf.timeOfP.minute * 100;
-    int second = inf.timeOfP.second;
+long long getTimeValue(Info inf){
+    long long year = inf.timeOfP.year * 10000000000;
+    long long month = inf.timeOfP.month * 100000000;
+    long long day = inf.timeOfP.day * 1000000;
+    long long hour = inf.timeOfP.hour * 10000;
+    long long minute = inf.timeOfP.minute * 100;
+    long long  second = inf.timeOfP.second;
 
     // now add together to get one number and return it
     return year + month + day + hour + minute + second;
@@ -356,8 +363,19 @@ void showByCategories(PayNode* node){
        }
 }
 
-
-
+int countingList(PayNode* node){
+    PayNode* temp = node;
+    int counter = 0;
+    if(temp == NULL){
+        printf("empty");
+        return counter;
+    }
+    while(temp){
+        counter++;
+        temp = temp->pNext;
+    }
+   return counter;
+}
 
 
 

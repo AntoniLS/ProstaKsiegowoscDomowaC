@@ -14,7 +14,7 @@ struct Time{
     int day;
     int month;
     int year;
-    int sortValue;
+    long long sortValue;
     bool beforeOrAfter; // na poczatku false, potrzebne do wyswietlenia w odpowiedniej kolejnosci
 };
 struct Category{
@@ -64,6 +64,7 @@ void addProfileNode(Prof** profNode);
 PInfo getProfileNameAndAccountNumber();
 void renameProfile(Prof** profNode);
 void showByCategories(PayNode* node);
-int getTimeValue(Info inf);
+long long getTimeValue(Info inf);
+int countingList(PayNode* node);
 
 #endif //PROSTAKSIEGOWOSCDOMOWAC_FUNKCJE_H
