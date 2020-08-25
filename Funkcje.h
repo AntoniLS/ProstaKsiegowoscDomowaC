@@ -15,6 +15,7 @@ struct Time{
     int month;
     int year;
     int sortValue;
+    bool beforeOrAfter; // na poczatku false, potrzebne do wyswietlenia w odpowiedniej kolejnosci
 };
 struct Category{
     char category[con];

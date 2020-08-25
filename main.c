@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
     PayNode *pHead = NULL;// poczatek listy rachunkow
     Prof *profileList = NULL; // poczatek listy profilow
     loadingFromFile(nameOfEntryFile, &pHead); // wczytywanie danych poczatkowych z pliku
-    readingNodes(pHead); // sprawdzenie
+    //readingNodes(pHead); // sprawdzenie
     printf("========\n");
    // showIncomeOutcome(pHead, 2); // gdy jest aktywne przy uruchomieniu z pustym buforem (chyba wywoluje blad)? //TODO
     programExecution(&pHead, &profileList); // wywolanie wlasciwego programu, przekazanie listy rachunkow i profilow

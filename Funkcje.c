@@ -137,6 +137,8 @@ void showProfiles(Prof* profNode){ // print profile names and assigned to them a
 void timeList(PayNode* node){ // drukowanie zgdonie z ramami czasowymi
     // sortowanie zgdonie z node->info.timeOfP.sortValue
 
+
+
 }
 void expensesSortedByMemberList(PayNode* node, Prof* profNode){
 
@@ -220,8 +222,12 @@ Info addingToStruct(char * temporaryLine){ // Wyłuskanie informacji z pliku tek
     piece = strtok(NULL, "\n"); // category
     strcpy(temp.cat.category, piece);
 
+    //pseudo wyjatkowa liczba dla kazdego node'a bazujaca na czasie w ktorym zostala wykonana platnosc
     int valueSetFromTime = getTimeValue(temp);
     temp.timeOfP.sortValue = valueSetFromTime;
+
+    //aby latwiej wyswitlic w odpowiedniej kolejnosci
+    temp.timeOfP.beforeOrAfter = false;
 
     //TODO jak ominac ewentualne bledy na poczatku ktore mogly by zastapic +/-
     //income or outcome
