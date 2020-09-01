@@ -26,12 +26,12 @@ int main(int argc, char* argv[]){
     Prof *profileList = NULL; // poczatek listy profilow
     loadingFromFile(nameOfEntryFile, &pHead); // wczytywanie danych poczatkowych z pliku
     //readingNodes(pHead); // sprawdzenie
-    printf("========\n");
    // showIncomeOutcome(pHead, 2); // gdy jest aktywne przy uruchomieniu z pustym buforem (chyba wywoluje blad)? //TODO
     programExecution(&pHead, &profileList); // wywolanie wlasciwego programu, przekazanie listy rachunkow i profilow
 
-    // czyszczenie pamieci /////////////
-        //TODO czyszczenie pamieci
+    // czyszczenie pamieci //
+    exitDeleteProfiles(&profileList);
+    exitDeleteNodes(&pHead);
     return 0;
 }
 

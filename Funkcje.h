@@ -3,10 +3,12 @@
 #define PROSTAKSIEGOWOSCDOMOWAC_FUNKCJE_H
 #define con 100
 
-typedef int bool;    // dodanie typu bool
+/**typ bool w c*/
+typedef int bool;
 #define true 1
 #define false 0
 
+/** struktura zawierajaca informacje na temat czasu płatności */
 struct Time{
     int second;
     int minute;
@@ -17,9 +19,13 @@ struct Time{
     long long sortValue;
     bool beforeOrAfter; // na poczatku false, potrzebne do wyswietlenia w odpowiedniej kolejnosci
 };
+
+/** struktura zawierajaca kategorie platnosci */
 struct Category{
     char category[con];
 };
+
+/** struktura zawierajaca informacje na temat dokonanej platnosci */
 typedef struct PaymentInfo{
     char plusminus[2];
     char accountNumber[con];
@@ -29,19 +35,24 @@ typedef struct PaymentInfo{
     struct Time timeOfP;
 }Info;
 
+/** node zawierajacy płatność */
 typedef struct Payment{
-    struct Payment* pNext;
-    struct PaymentInfo info;
+    struct Payment* pNext; ///< następny node
+    struct PaymentInfo info; ///< informacje na temat dokonanej platnosci
 }PayNode;
+
+/** struktura zawierajace informacje na temat profilu */
 typedef struct ProfileInfo{
     char accountNumber[con];
     char profileName[con];
 }PInfo;
 
+/** node zawierajacy profil */
 typedef struct Profile{
-    struct Profile* pNext;
-    struct ProfileInfo info;
+    struct Profile* pNext; ///< następny node
+    struct ProfileInfo info; ///< informacje na temat profilu
 }Prof;
+
 
 void printingMenu();
 int check(const char *);
@@ -66,5 +77,8 @@ void renameProfile(Prof** profNode);
 void showByCategories(PayNode* node);
 long long getTimeValue(Info inf);
 int countingList(PayNode* node);
+void deleteProfile(Prof** node);
+void exitDeleteProfiles(Prof** profNode);
+void exitDeleteNodes(PayNode** node);
 
 #endif //PROSTAKSIEGOWOSCDOMOWAC_FUNKCJE_H

@@ -39,7 +39,7 @@ void printingMenu(PayNode** node, Prof** profNode ) {
                 showIncomeOutcome(*node, decisionInsideSwitch);
                 break;
             case 4: //Show spending through time
-                timeList(*node /*,*profNode*/); //?
+                timeList(node /*,*profNode*/); // ty byl node*
                 break;
             case 5: //Show all spending by specific family member [after creating profiles]
                 expensesSortedByMemberList(*node, *profNode);
@@ -48,17 +48,15 @@ void printingMenu(PayNode** node, Prof** profNode ) {
                 showByCategories(*node);
                 break;
             case 7: // PROFILES
-                //TODO  usuwanie profilow
                 profilesMenu(profNode);
                 break;
             case 8:
-
                 repeatMenu = false;
                 break;
             default: // gdy check zwroci 0
                 printf("Incorrect decision\n");
                 sleep(3);
-                //printf("\033c"); // wipe terminal //doesnt work at all
+                //printf("\033c"); // wipe terminal // nie dziala
                 system("clear");
                 break;
         }
@@ -67,33 +65,37 @@ void printingMenu(PayNode** node, Prof** profNode ) {
 }
 
 void profilesMenu(Prof** profNode){
-    char decision[10];
-    puts("[1] Show Profiles");
-    puts("[2] Add Profile");
-    puts("[3] Rename Profile");
-    puts("[4] Delete Profile");
-    scanf("%s", decision);
-    int ifCorrect = check(decision);
 
-    switch(ifCorrect){
-        case 1: //Show Profiles
-            showProfiles(*profNode);
-//            printf("%s",(*profNode)->info.profileName); // SPRAWDZENIE
-//            printf("%s",(*profNode)->info.accountNumber);
-//            printf("%s",(*profNode)->pNext->info.profileName);
-//            printf("%s",(*profNode)->pNext->info.accountNumber);
-            break;
-        case 2: //Add Profile
-            addProfileNode(profNode);
-            break;
-        case 3: //Rename Profile
-            renameProfile(profNode);
-            break;
-        case 4: //Delete Profile
-            //TODO
-            //deleteProfile(ProfNode);
-            break;
-        default:
-            break;
-    }
+    bool repeatProfileMenu = true;
+    do {
+        char decision[10];
+        puts("[1] Show Profiles");
+        puts("[2] Add Profile");
+        puts("[3] Rename Profile");
+        puts("[4] Delete Profile");
+        puts("[5] Exit to menu");
+        scanf("%s", decision);
+        int ifCorrect = check(decision);
+
+        switch (ifCorrect) {
+            case 1: //Show Profiles
+                showProfiles(*profNode);
+                break;
+            case 2: //Add Profile
+                addProfileNode(profNode);
+                break;
+            case 3: //Rename Profile
+                renameProfile(profNode);
+                break;
+            case 4: //Delete Profile
+                deleteProfile(profNode);
+                break;
+            case 5: // exit to menu
+                repeatProfileMenu = false;
+                break;
+            default:
+                break;
+        }
+    }while(repeatProfileMenu == true);
+
 }

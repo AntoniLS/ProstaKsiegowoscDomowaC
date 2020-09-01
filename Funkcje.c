@@ -14,7 +14,6 @@ void programExecution(PayNode** node, Prof** profileList){ // <----- Główna cz
 
     printingMenu(node, profileList); // przekazanie parametrow do funkcji odpowiedzialnej za interakcje z programem
 
-    //TODO czyszczenie pamieci
 }
 
 void addProfileNode(Prof** profNode){
@@ -115,7 +114,6 @@ void renameProfile(Prof** profNode){
         temp = temp->pNext;
     }
     printf("There is no such profile");
-    //TODO Ewentualne dodatki typu peta do czasu az zmienimy, chyba ze nie istnieje to return
 }
 
 void showProfiles(Prof* profNode){ // print profile names and assigned to them accountnumbers
@@ -390,17 +388,55 @@ int countingList(PayNode* node){
 }
 
 
+void deleteProfile(Prof** node){
 
-/////////////////////////////////////// NA RAZIE NIEPOTRZEBNE ////////////////////////////////////////////////////
+    showProfiles(*node);
 
-void  conditionalReading(PayNode* node, char pm){ // ???
-    if(node->pNext == NULL){
-        printf("empty");
+    if(*node == NULL){
+        //puts("There is no Profiles!"); // w show profiles wyswietli sie to samo
+        return;
     }
-    while(node){
-        if(node->info.plusminus[0] == pm){ // trzeba jeszcze ustawic
-            /* printf("%s %s %s", node->info.value, node->info.currency, node->info.accountNumber);*/
+
+    char nameOfProfileToDelete[con];
+    printf("Type profile name that you want to delete >");
+    clearBuffer();
+    scanf("%s", nameOfProfileToDelete);
+
+    if(!strcmp((*node)->info.profileName,nameOfProfileToDelete)){
+        Prof* temp = *node;
+        (*node) = (*node)->pNext;
+        free(temp);
+        printf("Deleted profile: %s successfully!", nameOfProfileToDelete);
+        return;
+    }
+    for(Prof* copy = *node; copy->pNext != NULL; copy = copy->pNext){
+        if(!strcmp(copy->pNext->info.profileName, nameOfProfileToDelete)){
+            Prof* temp = copy->pNext;
+            copy->pNext = copy->pNext->pNext;
+            free(temp);
+            return;
         }
-        node = node->pNext;
     }
+    puts("There is no profile with such name!");
+}
+
+void exitDeleteNodes(PayNode** node){
+    PayNode* copy = *node;
+    while(copy){
+        PayNode* temp = copy;
+        copy = copy->pNext;
+        free(temp);
+        puts("deleted node");
+    }
+    *node = NULL;
+}
+void exitDeleteProfiles(Prof** profNode){
+    Prof* copy = *profNode;
+    while(copy){
+        Prof* temp = copy;
+        copy = copy->pNext;
+        free(temp);
+        puts("deleted profile");
+    }
+    *profNode = NULL;
 }
