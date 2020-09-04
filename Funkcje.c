@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <unistd.h>
-#include <math.h>
 
 #include "Funkcje.h"
 
@@ -12,7 +10,9 @@
 
 void programExecution(PayNode** node, Prof** profileList){ // <----- Główna część programu
 
+    //defaulProfileList(profileList);
     printingMenu(node, profileList); // przekazanie parametrow do funkcji odpowiedzialnej za interakcje z programem
+
 
 }
 
@@ -116,7 +116,7 @@ void renameProfile(Prof** profNode){
     printf("There is no such profile");
 }
 
-void showProfiles(Prof* profNode){ // print profile names and assigned to them accountnumbers
+void showProfiles(Prof* profNode){ // print nazwy profilow i przypisane do nich numery konta
     Prof* temp = profNode;
     if(temp == NULL){
         printf("Empty");
@@ -126,10 +126,12 @@ void showProfiles(Prof* profNode){ // print profile names and assigned to them a
             temp = temp->pNext;
         }
     }
+    printf("\n");
+
 }
 
-void timeList(PayNode** node){ // drukowanie zgdonie z ramami czasowymi
-    // sortowanie zgdonie z node->info.timeOfP.sortValue
+void timeList(PayNode** node){ // print zgdonie z ramami czasowymi
+
     long long min = alot;
     int howManyNodes = countingList(*node);
     //printf("%d", howManyNodes);
@@ -153,7 +155,7 @@ void timeList(PayNode** node){ // drukowanie zgdonie z ramami czasowymi
         //printf("%lld\n", min);
         min = alot;
     }
-
+    waiting();
 }
 
 void expensesSortedByMemberList(PayNode* node, Prof* profNode){
@@ -181,6 +183,7 @@ void expensesSortedByMemberList(PayNode* node, Prof* profNode){
             temp = temp->pNext;
         }
     }
+    waiting();
 }
 
 int check(const char *decision) { // sprawdza czy podany string jest liczba
@@ -274,7 +277,7 @@ int convertToInt(const char* chToInt){
     return t;
 } // convrting char to integer
 
-void addingPaymentToNode(PayNode **node, Info infAboutPayment){ // creating node that will contain payment info
+void addingPaymentToNode(PayNode **node, Info infAboutPayment){ // tworzenie node'a zawierajacego informacje o platnosci
     PayNode* newNode = malloc(sizeof(PayNode));
     newNode->pNext = NULL;
     newNode->info = infAboutPayment;
@@ -439,4 +442,29 @@ void exitDeleteProfiles(Prof** profNode){
         puts("deleted profile");
     }
     *profNode = NULL;
+}
+
+void defaultProfileList(Prof** profNode, const char* nameOfFileWithDefaultProfiles){
+
+    FILE *entryFile = fopen(nameOfFileWithDefaultProfiles, "r");
+    if (entryFile) {
+        char temporaryLine[con];
+        while(fgets(temporaryLine, con, entryFile)){
+
+            PInfo temp = addingProfileFromLine(temporaryLine); // temporary struct
+
+            addingDefaultProfiles(profNode, temp);
+        }
+        fclose(entryFile);
+    }
+    else{
+        printf("couldn't open text file\n");
+    }
+
+}
+PInfo addingProfileFromLine(const char* temporaryLine){
+
+}
+void addingDefaultProfiles(Prof** profNode, PInfo temp){
+
 }

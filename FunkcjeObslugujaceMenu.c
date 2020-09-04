@@ -55,7 +55,7 @@ void printingMenu(PayNode** node, Prof** profNode ) {
                 break;
             default: // gdy check zwroci 0
                 printf("Incorrect decision\n");
-                sleep(3);
+                //sleep(3);
                 //printf("\033c"); // wipe terminal // nie dziala
                 system("clear");
                 break;
@@ -80,6 +80,7 @@ void profilesMenu(Prof** profNode){
         switch (ifCorrect) {
             case 1: //Show Profiles
                 showProfiles(*profNode);
+                waiting();
                 break;
             case 2: //Add Profile
                 addProfileNode(profNode);
@@ -89,11 +90,13 @@ void profilesMenu(Prof** profNode){
                 break;
             case 4: //Delete Profile
                 deleteProfile(profNode);
+                waiting();
                 break;
             case 5: // exit to menu
                 repeatProfileMenu = false;
                 break;
             default:
+                printf("Incorrect decision \n");
                 break;
         }
     }while(repeatProfileMenu == true);

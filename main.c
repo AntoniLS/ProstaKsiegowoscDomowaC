@@ -6,10 +6,10 @@
 #include "Funkcje.c"
 
 int main(int argc, char* argv[]){
-    // pliki wejsciowe / wyjsciowe //////////////
+    ///////////// pliki wejsciowe / wyjsciowe //////////////
     char* nameOfEntryFile;
 
-    // sprawdzenie czy argumenty zostaly wprowadzone poprawnie (plik wejsciowy przez -i x) ///////////////
+    ///////// sprawdzenie czy argumenty zostaly wprowadzone poprawnie (plik wejsciowy przez -i x) x to nazwa pliku///////////////
     for(int counter = 0; counter < argc ; counter++){
         char* param = argv[counter];
         int boolean = strcmp(param,"-i"); // zwraca 0 w przypadku zgodności
@@ -20,16 +20,16 @@ int main(int argc, char* argv[]){
         }
     // printf("%s\n", nameOfEntryFile); // spradzenie
 
-    // wlasciwy program... wczytywanie danych... menu... //////////////
+    //////////////// wlasciwy program... wczytywanie danych... menu... //////////////
 
     PayNode *pHead = NULL;// poczatek listy rachunkow
     Prof *profileList = NULL; // poczatek listy profilow
     loadingFromFile(nameOfEntryFile, &pHead); // wczytywanie danych poczatkowych z pliku
     //readingNodes(pHead); // sprawdzenie
-   // showIncomeOutcome(pHead, 2); // gdy jest aktywne przy uruchomieniu z pustym buforem (chyba wywoluje blad)? //TODO
+    //showIncomeOutcome(pHead, 2); // gdy jest aktywne przy uruchomieniu z pustym buforem (chyba wywoluje blad)? //TODO
     programExecution(&pHead, &profileList); // wywolanie wlasciwego programu, przekazanie listy rachunkow i profilow
 
-    // czyszczenie pamieci //
+    /////////// czyszczenie pamieci //////////////
     exitDeleteProfiles(&profileList);
     exitDeleteNodes(&pHead);
     return 0;
