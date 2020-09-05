@@ -154,7 +154,7 @@ void exitDeleteProfiles(Prof** profNode);
  * */
 void exitDeleteNodes(PayNode** node);
 
-void defaulProfileList(Prof** profNode);
+void defaulProfileList(Prof** profNode, const char* defaultProfileInputFile);
 PInfo addingProfileFromLine(const char* temporaryLine);
 void addingDefaultProfiles(Prof**, PInfo x);
 

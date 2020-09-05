@@ -10,7 +10,7 @@
 
 void programExecution(PayNode** node, Prof** profileList){ // <----- Główna część programu
 
-    //defaulProfileList(profileList);
+
     printingMenu(node, profileList); // przekazanie parametrow do funkcji odpowiedzialnej za interakcje z programem
 
 
@@ -463,8 +463,32 @@ void defaultProfileList(Prof** profNode, const char* nameOfFileWithDefaultProfil
 
 }
 PInfo addingProfileFromLine(const char* temporaryLine){
-
+    PInfo temp;
+    char* line = temporaryLine;
+    char* piece = strtok(line, " "); // name
+    strcpy(temp.profileName, piece);
+    piece = strtok(NULL ,"\n");
+    strcpy(temp.accountNumber, piece);
+    
+    return temp;
 }
 void addingDefaultProfiles(Prof** profNode, PInfo temp){
+
+    Prof* tempNode = malloc(sizeof(Prof));
+    tempNode->pNext = NULL;
+    tempNode->info = temp;
+
+    if(*profNode == NULL){
+        printf("firstDefaultProfileNode\n");
+        *profNode = tempNode;
+    }
+    else {
+        printf("newDefaultProfileNode\n");
+        Prof *temp = *profNode;
+        while (temp->pNext != NULL) {
+            temp = temp->pNext;
+        }
+        temp->pNext = tempNode;
+    }
 
 }
