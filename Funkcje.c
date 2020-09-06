@@ -492,3 +492,22 @@ void addingDefaultProfiles(Prof** profNode, PInfo temp){
     }
 
 }
+void saveProfiles(Prof* profileList ,const char *nameOfFileWithDefaultProfiles){ // zapis dodanych profilow do pliku, z ktorego przy nastepnym uruchomieniu wczytają się te same profile
+
+    FILE* saveProfilesFile = fopen(nameOfFileWithDefaultProfiles, "w"); // otwarcie pliku ktory juz istnieje -> nadpisanie
+    if(saveProfilesFile){
+        Prof* temp = profileList;
+        if(temp == NULL){
+            puts("There is no profiles to save");
+            return;
+        }
+        while(temp != NULL){
+            fprintf(saveProfilesFile, "%s %s\n", temp->info.profileName, temp->info.accountNumber);
+            temp = temp->pNext;
+        }
+        fclose(saveProfilesFile);
+    }
+    else{
+        puts("Problem with opening file for saving data.");
+    }
+}

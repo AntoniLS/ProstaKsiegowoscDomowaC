@@ -33,6 +33,7 @@ int main(int argc, char* argv[]){
     //showIncomeOutcome(pHead, 2); // gdy jest aktywne przy uruchomieniu z pustym buforem (chyba wywoluje blad)? //TODO
     programExecution(&pHead, &profileList); // wywolanie wlasciwego programu, przekazanie listy rachunkow i profilow
 
+    saveProfiles(profileList ,nameOfFileWithDefaultProfiles);// zapis profilow nowo dodanych
     /////////// czyszczenie pamieci //////////////
     exitDeleteProfiles(&profileList);
     exitDeleteNodes(&pHead);

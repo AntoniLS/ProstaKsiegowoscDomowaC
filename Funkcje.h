@@ -157,5 +157,6 @@ void exitDeleteNodes(PayNode** node);
 void defaulProfileList(Prof** profNode, const char* defaultProfileInputFile);
 PInfo addingProfileFromLine(const char* temporaryLine);
 void addingDefaultProfiles(Prof**, PInfo x);
+void saveProfiles(Prof* profileList ,const char *nameOfFileWithDefaultProfiles);
 
 #endif //PROSTAKSIEGOWOSCDOMOWAC_FUNKCJE_H
