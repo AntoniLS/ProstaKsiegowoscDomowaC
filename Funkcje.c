@@ -10,9 +10,7 @@
 
 void programExecution(PayNode** node, Prof** profileList){ // <----- Główna część programu
 
-
     printingMenu(node, profileList); // przekazanie parametrow do funkcji odpowiedzialnej za interakcje z programem
-
 
 }
 
@@ -204,7 +202,12 @@ void loadingFromFile(const char *nameOfEntryFile, PayNode **node) {
     if (entryFile) {
         char temporaryLine[con];
         while(fgets(temporaryLine, con, entryFile)){
-
+            // sprawdzenie poprawności danych //
+            int x = checkIfLineIsCorrect(temporaryLine);
+            if(x == 1){
+                continue;
+            }
+            // poprawne dane zostaja wczytywane do struktury //
             Info temp = addingToStruct(temporaryLine); // temporary struct
 
             //printf("%s %s %s %d\n", temp.value,temp.currency,temp.accountNumber, temp.timeOfP.year ); //sprawdzenie poprawnosci wczywtywania z pliku
@@ -222,6 +225,7 @@ Info addingToStruct(char * temporaryLine){ // Wyłuskanie informacji z pliku tek
     Info temp;
     char* piece = strtok(tempLine, " "); // value
     strcpy(temp.value, piece);
+    printf("[%s]", piece);
     piece = strtok(NULL, " "); //currency
     strcpy(temp.currency, piece);
     piece = strtok(NULL, " "); // acountnumber
@@ -260,6 +264,99 @@ Info addingToStruct(char * temporaryLine){ // Wyłuskanie informacji z pliku tek
 
     return temp;
 }
+int checkIfLineIsCorrect(const char* temporaryLine){
+
+    char testWord[con];
+    int testNumber;
+
+    char tempLine[con];            // to tez moze byc problemem w normalnym programie
+    strcpy(tempLine, temporaryLine); // kopia linii zawierajacej dane o płatności
+
+    char* piece = strtok(tempLine, " "); // value +/-X.YZ..
+    strcpy(testWord, piece);
+    if(isspace(testWord[0])){
+        puts("detected wrong line");
+        return 1;
+    }
+
+    piece = strtok(NULL, " "); //currency EUR, PLN itd..
+    strcpy(testWord, piece);
+    if(check(piece)){   //jesli liczba, błąd
+        puts("detected wrong line, currency format is not valid");
+        return 1;
+    }
+
+    piece = strtok(NULL, " "); // acountnumber 1233211233211233215
+    strcpy(testWord, piece);
+    if(!check(piece) || ifContainsLetter(piece)){
+        puts("detected wrong line, accountnumber is not valid");
+        return 1;
+    }
+
+    piece = strtok(NULL, ":"); // year
+    if(ifContainsLetter(piece)){
+        puts("detected wrong line, year contain letter so its not valid");
+        return 1;
+    }
+    //testNumber = convertToInt(piece);
+
+
+    piece = strtok(NULL, ":"); // month
+    if(ifContainsLetter(piece)){
+        puts("detected wrong line, month contain letter so its not valid");
+        return 1;
+    }
+    //testNumber = convertToInt(piece);
+
+    piece = strtok(NULL, " "); // day
+    if(ifContainsLetter(piece)){
+        puts("detected wrong line, day contain letter so its not valid");
+        return 1;
+    }
+    //testNumber = convertToInt(piece);
+
+    piece = strtok(NULL, ":"); // hour
+    if(ifContainsLetter(piece)){
+        puts("detected wrong line, hour contain letter so its not valid");
+        return 1;
+    }
+    //testNumber = convertToInt(piece);
+
+    piece = strtok(NULL, ":"); // minute
+    if(ifContainsLetter(piece)){
+        puts("detected wrong line, minute contain letter so its not valid");
+        return 1;
+    }
+    //testNumber = convertToInt(piece);
+
+    piece = strtok(NULL, " "); // seconds
+    if(ifContainsLetter(piece)){
+        puts("detected wrong line, second contain letter so its not valid");
+        return 1;
+    }
+    //testNumber = convertToInt(piece);
+
+    piece = strtok(NULL, "\n"); // category
+    if(check(piece)){   //jesli liczba, błąd
+        puts("detected wrong line, category format is not valid");
+        return 1;
+    }
+    strcpy(testWord, piece);
+
+    return 0;
+}
+int ifContainsLetter(const char* word){
+    int counter = 0;
+    while(word[counter] != '\0'){
+        if(isalpha(word[counter])){
+            return 1;
+        }
+        counter++;
+    }
+    return 0;
+}
+
+
 long long getTimeValue(Info inf){
     long long year = inf.timeOfP.year * 10000000000;
     long long month = inf.timeOfP.month * 100000000;
@@ -511,3 +608,4 @@ void saveProfiles(Prof* profileList ,const char *nameOfFileWithDefaultProfiles){
         puts("Problem with opening file for saving data.");
     }
 }
+
