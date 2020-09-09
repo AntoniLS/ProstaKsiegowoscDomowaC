@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <unistd.h>
-
 #include "Funkcje.h"
 
 void printingMenu(PayNode** node, Prof** profNode ) {
@@ -10,7 +9,7 @@ void printingMenu(PayNode** node, Prof** profNode ) {
     do {
         char decision[10];
         int decisionInsideSwitch;
-        //TODO paski procentowe
+
         puts("[1] Show whole bill from all forwarded transactions"); //caly rachunek
         puts("[2] Show income"); // pokaz dochod z wszystkich transakcji
         puts("[3] Show outcome"); // pokaz wydatki z wszystkich transakcji
@@ -101,4 +100,9 @@ void profilesMenu(Prof** profNode){
         }
     }while(repeatProfileMenu == true);
 
+}
+void programExecution(PayNode** node, Prof** profileList){ // <----- Główna część programu
+    printf("______________________________________________\n");
+    printingMenu(node, profileList); // przekazanie parametrow do funkcji odpowiedzialnej za interakcje z programem
+    printf("______________________________________________\n");
 }
