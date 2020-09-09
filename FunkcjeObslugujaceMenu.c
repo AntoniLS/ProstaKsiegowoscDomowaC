@@ -6,7 +6,7 @@
 #include "Funkcje.h"
 
 void printingMenu(PayNode** node, Prof** profNode ) {
-    bool repeatMenu = true;
+    bool repeatMenu = true; // po każdej decyzji powrót do początku, wyjątkiem wyjście z programu
     do {
         char decision[10];
         int decisionInsideSwitch;

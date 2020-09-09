@@ -53,10 +53,12 @@ typedef struct Profile{
     struct ProfileInfo info; ///< informacje na temat profilu
 }Prof;
 
+// Menu Functions //
 /**
  * Funkcja wyświetlająca menu z wszystkimi opcjami do wyboru
  */
 void printingMenu(PayNode** node,Prof** profNode);
+
 /**
  * Funkcja sprawdzająca czy podany łańcuch jest liczbą
  * */
@@ -153,13 +155,33 @@ void exitDeleteProfiles(Prof** profNode);
  * Zwalnianie zaalokowanej pamięci (Lista płatności)
  * */
 void exitDeleteNodes(PayNode** node);
-
+/**
+ * Funkcja obsługująca plik zawierający domyślną listę profilów [nazwa | numer konta]
+ * */
 void defaultProfileList(Prof** profNode, const char* defaultProfileInputFile);
+/**
+ * Wyłuskanie danych profilu z łańcucha znaków pobranego z pliku
+ * */
 PInfo addingProfileFromLine(const char* temporaryLine);
+/**
+ * Dodawanie domyślnego profilu do listy
+ * */
 void addingDefaultProfiles(Prof**, PInfo x);
+/**
+ * Zapisywanie domyślnych + utworzonych w trakcie dzialania programu profilów do pliku
+ * */
 void saveProfiles(Prof* profileList ,const char *nameOfFileWithDefaultProfiles);
+/**
+ * Sprawdzenie poprwaności danych z pobranej linii, (czy format jest odpowiedni) jeśli nie, pomiń
+ * */
 int checkIfLineIsCorrect(const char* x);
-
+/**
+ * Funkcja sprawdzająca zawartość litery w łańcuchu znaków, jeśli ma zwraca 1 w przeciwnym wypadku 0
+ * */
 int ifContainsLetter(const char* word);
+/**
+ * Sprawdzenie poprawności danych z pobranej linii, (czy format jest odpowiedni [nazwaProfilu | numer konta]) jeśli nie, pomiń
+ * */
+int checkIfLineIsCorrectProfile(const char* line);
 
 #endif //PROSTAKSIEGOWOSCDOMOWAC_FUNKCJE_H

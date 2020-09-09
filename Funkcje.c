@@ -7,7 +7,6 @@
 #define numberOfCategories 5
 #define alot 30000000000000
 
-
 void programExecution(PayNode** node, Prof** profileList){ // <----- Główna część programu
 
     printingMenu(node, profileList); // przekazanie parametrow do funkcji odpowiedzialnej za interakcje z programem
@@ -220,12 +219,12 @@ void loadingFromFile(const char *nameOfEntryFile, PayNode **node) {
         printf("couldn't open text file\n");
     }
 }
-Info addingToStruct(char * temporaryLine){ // Wyłuskanie informacji z pliku tekstowego
-    char* tempLine = temporaryLine;
+Info addingToStruct(char * temporaryLine) { // Wyłuskanie informacji z pliku tekstowego
+
     Info temp;
-    char* piece = strtok(tempLine, " "); // value
+    char *piece = strtok(temporaryLine, " "); // value
     strcpy(temp.value, piece);
-    printf("[%s]", piece);
+    // printf("[%s]", piece);
     piece = strtok(NULL, " "); //currency
     strcpy(temp.currency, piece);
     piece = strtok(NULL, " "); // acountnumber
@@ -247,7 +246,7 @@ Info addingToStruct(char * temporaryLine){ // Wyłuskanie informacji z pliku tek
 
     //pseudo wyjatkowa liczba dla kazdego node'a bazujaca na czasie w ktorym zostala wykonana platnosc
     long long valueSetFromTime = getTimeValue(temp);
-    printf("%lld", valueSetFromTime);
+    //printf("%lld", valueSetFromTime); // sprawdzenie
     temp.timeOfP.sortValue = valueSetFromTime;
 
     //aby latwiej wyswitlic w odpowiedniej kolejnosci
@@ -255,10 +254,9 @@ Info addingToStruct(char * temporaryLine){ // Wyłuskanie informacji z pliku tek
 
     //TODO jak ominac ewentualne bledy na poczatku ktore mogly by zastapic +/-
     //income or outcome
-    if(temp.value[0] == '+'){
+    if (temp.value[0] == '+') {
         strcpy(temp.plusminus, "+");
-    }
-    else if(temp.value[0] == '-'){
+    } else if (temp.value[0] == '-') {
         strcpy(temp.plusminus, "-");
     }
 
@@ -267,7 +265,7 @@ Info addingToStruct(char * temporaryLine){ // Wyłuskanie informacji z pliku tek
 int checkIfLineIsCorrect(const char* temporaryLine){
 
     char testWord[con];
-    int testNumber;
+    //int testNumber;
 
     char tempLine[con];            // to tez moze byc problemem w normalnym programie
     strcpy(tempLine, temporaryLine); // kopia linii zawierajacej dane o płatności
@@ -455,7 +453,7 @@ void waiting(){ // czeka na reakcje uzytkownika
 
 void showByCategories(PayNode* node){
         //dostepne kategoire
-       const char* categories[numberOfCategories] = {"BANK", "SUBSCRIPTION", "ELECTROMARKET", "SUBSCRIPTION", "CLOTHES"};
+       const char* categories[numberOfCategories] = {"BANK", "SUBSCRIPTION", "ELECTROMARKET", "CLOTHES"};
        //TODO wersja dynamiczna? gdyby kategorii bylo wiecej
 
         //wypisywanie
@@ -548,6 +546,10 @@ void defaultProfileList(Prof** profNode, const char* nameOfFileWithDefaultProfil
         char temporaryLine[con];
         while(fgets(temporaryLine, con, entryFile)){
 
+            int x = checkIfLineIsCorrectProfile(temporaryLine);
+            if(x == 1){
+                continue;
+            }
             PInfo temp = addingProfileFromLine(temporaryLine); // temporary struct
 
             addingDefaultProfiles(profNode, temp);
@@ -561,7 +563,9 @@ void defaultProfileList(Prof** profNode, const char* nameOfFileWithDefaultProfil
 }
 PInfo addingProfileFromLine(const char* temporaryLine){
     PInfo temp;
-    char* line = temporaryLine;
+    //char* line = temporaryLine; // byl warning
+    char line[con];
+    strcpy(line, temporaryLine);
     char* piece = strtok(line, " "); // name
     strcpy(temp.profileName, piece);
     piece = strtok(NULL ,"\n");
@@ -607,5 +611,28 @@ void saveProfiles(Prof* profileList ,const char *nameOfFileWithDefaultProfiles){
     else{
         puts("Problem with opening file for saving data.");
     }
+}
+
+int checkIfLineIsCorrectProfile(const char* tempLine){ //sprawdzenie poprawnosci wprowadzonych danych (domyslna lista profilów)
+
+    char line[con];
+    char part[con];
+
+    strcpy(line, tempLine);
+    char* piece = strtok(line, " "); // name
+    strcpy(part, piece);
+    if(isspace(part[0])){
+        puts("[Profile] detected wrong line");
+        return 1;
+    }
+    piece = strtok(NULL ,"\n");
+    strcpy(part, piece);
+    if(!check(part) || ifContainsLetter(part)){
+        puts("[Profile] detected wrong line, accountnumber is not valid");
+        return 1;
+    }
+
+
+    return 0;
 }
 
