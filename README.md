@@ -1,5 +1,5 @@
 # ProstaKsiegowoscDomowaC
-Projekt z przedmiotu Programwanie Komputerów na semestrze 2 
+Projekt z przedmiotu Programwanie Komputerów 2 
 
 Przełączniki:
   -i Receipt.txt
